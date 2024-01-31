@@ -1,7 +1,7 @@
 FROM alpine
 
 RUN apk add  --no-cache libffi-dev \
-    && apk add --no-cache $(echo $(wget --no-check-certificate -qO- https://raw.githubusercontent.com/dysf888/nas-tools/v2.9.1-e3a43d4/package_list.txt)) \
+    && apk add --no-cache $(echo $(wget --no-check-certificate -qO- https://raw.githubusercontent.com/dysf888/nas-tools/master/package_list.txt)) \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo "${TZ}" > /etc/timezone \
     && ln -sf /usr/bin/python3 /usr/bin/python \
@@ -10,7 +10,7 @@ RUN apk add  --no-cache libffi-dev \
     && chmod +x /usr/bin/mc \
     && pip install --upgrade pip setuptools wheel --break-system-packages \
     && pip install cython --break-system-packages \
-    && pip install -r https://raw.githubusercontent.com/dysf888/nas-tools/v2.9.1-e3a43d4/requirements.txt --break-system-packages \
+    && pip install -r https://raw.githubusercontent.com/dysf888/nas-tools/master/requirements.txt --break-system-packages \
     && apk del libffi-dev \
     && npm install pm2 -g \
     && rm -rf /tmp/* /root/.cache /var/cache/apk/* \
@@ -22,7 +22,7 @@ ENV LANG="C.UTF-8" \
     NASTOOL_CONFIG="/config/config.yaml" \
     NASTOOL_AUTO_UPDATE=true \
     NASTOOL_CN_UPDATE=true \
-    NASTOOL_VERSION="v2.9.1-e3a43d4" \
+    NASTOOL_VERSION="master" \
     PS1="\u@\h:\w \$ " \
     REPO_URL="https://github.com/dysf888/nas-tools.git" \
     PYPI_MIRROR="https://pypi.tuna.tsinghua.edu.cn/simple" \
@@ -37,7 +37,7 @@ RUN python_ver=$(python3 -V | awk '{print $2}') \
     && echo 'fs.inotify.max_user_watches=524288' >> /etc/sysctl.conf \
     && echo 'fs.inotify.max_user_instances=524288' >> /etc/sysctl.conf \
     && git config --global pull.ff only \
-    && git clone -b v2.9.1-e3a43d4 ${REPO_URL} ${WORKDIR} --depth=1 --recurse-submodule \
+    && git clone -b master ${REPO_URL} ${WORKDIR} --depth=1 --recurse-submodule \
     && git config --global --add safe.directory ${WORKDIR}
 EXPOSE 3000
 VOLUME ["/config"]
